@@ -20,5 +20,45 @@ package array
 */
 
 func searchRange(nums []int, target int) []int {
+	leftBound, rightBound := findLeft(nums, target), findRight(nums, target)
+	// target 在左边
+	if leftBound == -2 && rightBound == -2 {
+		return []int{-1, -1}
+	}
+	// 在中间存在
+	if rightBound-leftBound > 1 {
+		return []int{leftBound + 1, rightBound - 1}
+	}
+	// 在中间，不存在
+	return []int{-1, -1}
+}
 
+func findLeft(nums []int, target int) int {
+	res := -2
+	low, high := 0, len(nums)-1
+	for low <= high {
+		mid := low + (high-low)/2
+		if nums[mid] < target {
+			low = mid + 1
+		} else {
+			high = mid - 1
+			res = high
+		}
+	}
+	return res
+}
+
+func findRight(nums []int, target int) int {
+	res := -2
+	low, high := 0, len(nums)-1
+	for low <= high {
+		mid := low + (high-low)/2
+		if nums[mid] > target {
+			high = mid - 1
+		} else {
+			low = mid + 1
+			res = low
+		}
+	}
+	return res
 }
